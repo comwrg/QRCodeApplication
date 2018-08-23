@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     int REQUEST_CODE = 1;
 
     TextView textView, time;
-    EditText count, address, weigth;
+    EditText count, address, weigth, recvName;
     Spinner userName;
 
 
@@ -107,11 +107,12 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                createExcel(excelFile, "数量", "订单生成时间", "订单号", "寄件人", "地址", "重量");
+                createExcel(excelFile, "数量", "订单生成时间", "订单号", "寄件人", "收件人", "地址", "重量");
                 writeToExcel(count.getText().toString(), time.getText().toString(),
-                        textView.getText().toString(), fileName, address.getText().toString(), weigth.getText().toString());
+                        textView.getText().toString(), fileName, recvName.getText().toString(), address.getText().toString(), weigth.getText().toString());
                 textView.setText("");
                 count.setText("");
+                recvName.setText("");
                 address.setText("");
                 weigth.setText("");
                 Toast.makeText(MainActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         weigth = (EditText) findViewById(R.id.weight);
         time = (TextView) findViewById(R.id.time);
         userName = (Spinner) findViewById(R.id.userName);
+        recvName = (EditText) findViewById(R.id.recvName);
         getUserData();
         try {
             ArrayAdapter apecadapter = new ArrayAdapter<String>(this, R.layout.spiner_item, list);
@@ -208,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 创建excel表.
-    public void createExcel(File file, String count, String time, String orderNum, String userName, String address, String weight) {
+    public void createExcel(File file, String count, String time, String orderNum, String userName, String recvName, String address, String weight) {
         WritableSheet ws = null;
         try {
             if (!file.exists()) {
@@ -220,8 +222,9 @@ public class MainActivity extends AppCompatActivity {
                 Label bll2 = new Label(1, 0, time);
                 Label bll3 = new Label(2, 0, orderNum);
                 Label bll4 = new Label(3, 0, userName);
-                Label bll5 = new Label(4, 0, address);
-                Label bll6 = new Label(5, 0, weight);
+                Label bll5 = new Label(4, 0, recvName);
+                Label bll6 = new Label(5, 0, address);
+                Label bll7 = new Label(6, 0, weight);
 
                 ws.addCell(lbl1);
                 ws.addCell(bll2);
@@ -229,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 ws.addCell(bll4);
                 ws.addCell(bll5);
                 ws.addCell(bll6);
+                ws.addCell(bll7);
 
 
                 // 从内存中写入文件中
@@ -241,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void writeToExcel(String count, String time, String orderNum, String userName, String address, String weight) {
+    public void writeToExcel(String count, String time, String orderNum, String userName, String recvName, String address, String weight) {
 
         try {
             Workbook oldWwb = Workbook.getWorkbook(excelFile);
@@ -254,8 +258,9 @@ public class MainActivity extends AppCompatActivity {
             Label bll2 = new Label(1, row, time);
             Label bll3 = new Label(2, row, orderNum);
             Label bll4 = new Label(3, row, userName);
-            Label bll5 = new Label(4, row, address);
-            Label bll6 = new Label(5, row, weight);
+            Label bll5 = new Label(4, row, recvName);
+            Label bll6 = new Label(5, row, address);
+            Label bll7 = new Label(6, row, weight);
 
             ws.addCell(lbl1);
             ws.addCell(bll2);
@@ -263,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
             ws.addCell(bll4);
             ws.addCell(bll5);
             ws.addCell(bll6);
+            ws.addCell(bll7);
 
             // 从内存中写入文件中,只能刷一次.
             wwb.write();
